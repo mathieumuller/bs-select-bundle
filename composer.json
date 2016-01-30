@@ -1,5 +1,5 @@
 {
-    "name" : "axiolab/bootstrap-select-bundle",
+    "name" : "axiolab/bs-select-bundle",
     "description" : "Override symfony choice type implementing bootstrap-select js plugin",
     "type" : "symfony-bundle",
     "authors" : [{
