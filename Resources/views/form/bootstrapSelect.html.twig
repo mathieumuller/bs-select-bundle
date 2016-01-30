@@ -1,0 +1,184 @@
+{% block choice_widget %}
+    {% spaceless %}
+        {% set search = selectpicker.live_search|default %}
+        {% set multiselect = selectpicker.multiselect|default %}
+
+        {% if expanded %}
+            {{ block('choice_widget_expanded') }}
+        {% else %}
+            {{ block('choice_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+    <script>
+        $("#{{ id }}").selectpicker({});
+
+        $(document).ready(function(){
+            var select = $("body #{{ id }}");
+            {% if search.ajax|default %}
+                {% if search.route|default %}
+                    var config = {{ selectpicker|json_encode|raw }};
+                    config['property'] = "{{ search.property }}"
+                    var parent = select.parent();
+                    var searchbox = parent.find('.bs-searchbox');
+                    parent.on('changed.bs.select', function() {alert('ok')});
+                    $(searchbox).on('input propertychange', function(e) {
+                        e.stopPropagation();
+                    });
+
+                    var previousValue = null;
+                    $(searchbox).on('keyup', "input[type='text']", function() {
+                        var searchPattern = $(this).val();
+                        if (searchPattern != previousValue) {
+                            $.ajax({
+                                type: "POST",
+                                url: Routing.generate(config.live_search.route),
+                                data: {
+                                    operator: config.live_search.operator,
+                                    pattern: searchPattern
+                                },
+                                cache:false,
+                                success: function(response)
+                                {
+                                    select.find('option').each(function(idx, elt) {
+                                        $(this).remove();
+                                    });
+                                    select.selectpicker('refresh');
+
+                                    $.each(response, function(idx, value) {
+                                        select.append('<option value="'+value.id+'">'+value[config['property']]+'</option>')
+                                    });
+
+                                    select.selectpicker('refresh');
+                                    previousValue = searchPattern;
+                                }
+                            });
+                        }
+                    });
+
+                {% else  %}
+                    alert('No ajax route defined!');
+                {% endif %}
+            {% endif %}
+            select.on('changed.bs.select', function() {alert('ok')});
+        });
+    </script>
+{% endblock choice_widget %}
+
+{% block choice_widget_collapsed %}
+    {% spaceless %}
+        {% if selectpicker.show_tick|default %}
+            {% set attr = attr|merge({'class': 'selectpicker show-tick form-control'}) %}
+        {% else %}
+            {% set attr = attr|merge({'class': 'selectpicker form-control'}) %}
+        {% endif %}
+        <select
+            {{ block('widget_attributes') }}
+            {% if multiple %} multiple="true"
+                {% if multiselect.enabled|default %} multiple {% endif %}
+                {% if multiselect.max_options|default %} data-max-options="{{ multiselect.max_options }}"{% endif %}
+                {% if multiselect.selected_text_format|default %} data-selected-text-format="{{ multiselect.selected_text_format }}"{% endif %}
+            {% endif %}
+            {% if search.enabled|default %} data-live-search="true"{% endif %}
+            {% if selectpicker.placeholder|default %} title="{{ selectpicker.placeholder }}"{% endif %}
+            {% if selectpicker.style|default %} data-style="{{ selectpicker.style }}"{% endif %}
+            {% if selectpicker.width|default %} data-width="{{ selectpicker.width }}"{% endif %}
+            {% if selectpicker.max_size|default %} data-size="{{ selectpicker.max_size }}"{% endif %}
+            data-container="body"
+        >
+            {% if empty_value is not none %}
+                <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+    {% endspaceless %}
+{% endblock choice_widget_collapsed %}
+
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                <option
+                    value="{{ choice.value }}"
+                    {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
+                    {% if selectpicker.subtext|default and choice.attr.subtext|default %} data-subtext="{{ choice.attr.subtext }}"{% endif %}
+                    {% if selectpicker.keywords|default and choice.attr.keywords|default %} data-tokens="{{ choice.attr.keywords }}"{% endif %}
+                >
+                    {{ choice.label|trans({}, translation_domain) }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#% block bootstrap_select_widget %}
+    {% spaceless %}
+        <select
+            {{ block('widget_attributes') }}
+            {% if multiple is not empty %} multiple{% endif %}
+            {% if live_search is not empty %} data-live-search="true"{% endif %}
+            {% if max_options is not empty %} data-max-options="{{ max_options }}"{% endif %}
+            {% if placeholder is not empty %} title="{{ placeholder }}"{% endif %}
+            {% if selected_text_format is not empty %} selected-text-format="{{ selected_text_format }}"{% endif %}
+            {% if style is not empty %} data-style="{{ style }}"{% endif %}
+            {% if width is not empty %} data-width="{{ width }}"{% endif %}
+        >
+            {% if empty_value is not none %}
+                <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('bootstrap_select_options_widget') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('bootstrap_select_options_widget') }}
+        </select>
+
+        <script>
+            $('.selectpicker').selectpicker({});
+        </script>
+    {% endspaceless %}
+{% endblock bootstrap_select_widget %}
+
+{% block bootstrap_select_options_widget %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock bootstrap_select_options_widget %#}
+

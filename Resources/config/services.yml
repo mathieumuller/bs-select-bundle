@@ -1,0 +1,7 @@
+services:
+    axiolab.bootstrap_select.choice_extension:
+        class: AxioLab\BootstrapSelectBundle\Form\Extension\BootstrapSelectChoiceTypeExtension
+        arguments:
+            - %axiolab_bootstrap_select%
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
