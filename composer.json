@@ -14,10 +14,10 @@
     ],
     "autoload" : {
         "psr-0" : {
-            "AxioLab\\BootstrapSelectBundle" : ""
+            "Axiolab\\BootstrapSelectBundle" : ""
         }
     },
-    "target-dir" : "AxioLab/BootstrapSelectBundle",
+    "target-dir" : "Axiolab/BootstrapSelectBundle",
     "extra" : {
         "branch-alias" : {
             "dev-master" : "1.0.x-dev"
