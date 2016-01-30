@@ -2,10 +2,10 @@
 /*
  * (c) AxioCode <mathieu.muller@axiolab.com>
  */
-namespace AxioLab\BootstrapSelectBundle;
+namespace Axiolab\BootstrapSelectBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AxioLabBootstrapSelectBundle extends Bundle
+class AxiolabBootstrapSelectBundle extends Bundle
 {
 }

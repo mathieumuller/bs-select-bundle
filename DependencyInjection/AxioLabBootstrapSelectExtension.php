@@ -1,5 +1,5 @@
 <?php
-namespace AxioLab\BootstrapSelectBundle\DependencyInjection;
+namespace Axiolab\BootstrapSelectBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 
-class AxioLabBootstrapSelectExtension extends Extension implements PrependExtensionInterface
+class AxiolabBootstrapSelectExtension extends Extension implements PrependExtensionInterface
 {
     public function prepend(ContainerBuilder $container)
     {
@@ -52,7 +52,7 @@ class AxioLabBootstrapSelectExtension extends Extension implements PrependExtens
 
     protected function configureAssetic(ContainerBuilder $container)
     {
-        $jsPath = '%kernel.root_dir%/../src/AxioLab/BootstrapSelectBundle/Resources/public/js';
+        $jsPath = '%kernel.root_dir%/../src/Axiolab/BootstrapSelectBundle/Resources/public/js';
         $jsConfig = [
             'axiolab_bootstrap_select' => [
                 'inputs'  => [

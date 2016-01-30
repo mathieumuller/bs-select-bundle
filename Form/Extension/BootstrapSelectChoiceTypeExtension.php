@@ -1,5 +1,5 @@
 <?php
-namespace AxioLab\BootstrapSelectBundle\Form\Extension;
+namespace Axiolab\BootstrapSelectBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormView;

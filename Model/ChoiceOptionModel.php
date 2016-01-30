@@ -1,5 +1,5 @@
 <?php
-namespace AxioLab\BootstrapSelectBundle\Model;
+namespace Axiolab\BootstrapSelectBundle\Model;
 
 class ChoiceOptionModel
 {

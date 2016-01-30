@@ -1,5 +1,5 @@
 <?php
-namespace AxioLab\BootstrapSelectBundle\DependencyInjection;
+namespace Axiolab\BootstrapSelectBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -14,7 +14,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('form_resource')
-                    ->defaultValue('AxioLabBootstrapSelectBundle:form:bootstrapSelect.html.twig')
+                    ->defaultValue('AxiolabBootstrapSelectBundle:form:bootstrapSelect.html.twig')
                 ->end()
                 ->booleanNode('show_tick')
                     ->defaultFalse()

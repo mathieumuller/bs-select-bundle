@@ -14,8 +14,8 @@
     ],
     "autoload" : {
         "psr-0" : {
-            "AxioLab\\BootstrapSelectBundle" : ""
+            "Axiolab\\BootstrapSelectBundle" : ""
         }
     },
-    "target-dir" : "AxioLab/BootstrapSelectBundle"
+    "target-dir" : "Axiolab/BootstrapSelectBundle"
 }
