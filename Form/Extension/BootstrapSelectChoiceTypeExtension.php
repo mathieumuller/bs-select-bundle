@@ -4,7 +4,8 @@ namespace Axiolab\BootstrapSelectBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class BootstrapSelectChoiceTypeExtension extends AbstractTypeExtension
 {
@@ -13,12 +14,15 @@ class BootstrapSelectChoiceTypeExtension extends AbstractTypeExtension
     public function __construct($bundleParameters)
     {
         $this->bundleParameters = $bundleParameters;
+        $this->options          = [];
     }
+
     public function getExtendedType()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefined(
             [
