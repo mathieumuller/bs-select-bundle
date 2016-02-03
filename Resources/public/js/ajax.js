@@ -1,29 +1,53 @@
-var BsSelectAjaxProcessor = {
-    baseRequest: function(route, data, callback){
-        $.ajax({
-            type: "POST",
-            url: route,
-            data: data,
-            cache:false,
-            success: function(response)
-            {
-                if (typeof(callback) == "function"){
-                    callback(response);
+var AxiolabBootstrapSelect = {
+    timer: null,
+    searchValue: null,
+    currentRequest: null,
+    initAjaxSearching: function(inputId, config) {
+        $select    = $("body " + inputId);
+        $container = $select.parent();
+        $form      = $container.closest('form');
+        $searchbox = $container.find('.bs-searchbox');
+        $searchbar = $container.find("input[type='text']");
+        $loader    = "<div class='text-center'><i class='fa fa-refresh fa-spin'></i></div>";
+
+        $searchbox.on('input propertychange', function(e) {
+            e.stopPropagation();
+        });
+
+        $searchbar.on('keyup', function() {
+            $("body").find('.dropdown-menu .no-results').html($loader);
+            var search_pattern = $(this).val();
+
+            if (search_pattern != AxiolabBootstrapSelect.searchValue) {
+                if (AxiolabBootstrapSelect.timer != null) {
+                    clearTimeout(AxiolabBootstrapSelect.timer);
                 }
-                $(".loading").addClass("hidden");
+
+                if (AxiolabBootstrapSelect.currentRequest != null) {
+                    AxiolabBootstrapSelect.currentRequest.abort();
+                }
+
+                AxiolabBootstrapSelect.timer = setTimeout(
+                    function() {
+                        AxiolabBootstrapSelect.currentRequest = $.ajax({
+                            url : $form.attr('action'),
+                            type: $form.attr('method'),
+                            data : {
+                                bsselect_search: search_pattern
+                            },
+                            success: function(html) {
+                                AxiolabBootstrapSelect.currentRequest = null;
+                                AxiolabBootstrapSelect.timer = clearTimeout();
+
+                                $newSelect = $(html).find(inputId);
+                                $("body " + inputId).html($newSelect.html());
+                                $("body " + inputId).selectpicker('refresh');
+                            }
+                        });
+                    },
+                    250
+                );
             }
         });
-    },
-
-    initAjax: function(element, config) {
-        var parent = element.parent();
-        var searchBar = parent.find('.bs-searchbox').find("input[type='text']");
-
-        searchBar.on('keyup', function() {
-            var toSearch = toSearch.val();
-            console.log(toSearch);
-        });
     }
-
-
-}
+};
