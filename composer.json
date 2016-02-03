@@ -13,11 +13,10 @@
         "MIT"
     ],
     "autoload" : {
-        "psr-0" : {
+        "psr-4" : {
             "Axiolab\\BootstrapSelectBundle" : ""
         }
     },
-    "target-dir" : "Axiolab/BootstrapSelectBundle",
     "extra" : {
         "branch-alias" : {
             "dev-master" : "1.0.x-dev"
