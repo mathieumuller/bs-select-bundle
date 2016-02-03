@@ -52,7 +52,7 @@ class AxiolabBootstrapSelectExtension extends Extension implements PrependExtens
 
     protected function configureAssetic(ContainerBuilder $container)
     {
-        $jsPath = '%kernel.root_dir%/../vendor/Axiolab/BootstrapSelectBundle/Resources/public/js';
+        $jsPath = '%kernel.root_dir%/../vendor/axiolab/bs-select-bundle/Resources/public/js';
         $jsConfig = [
             'axiolab_bootstrap_select' => [
                 'inputs'  => [
