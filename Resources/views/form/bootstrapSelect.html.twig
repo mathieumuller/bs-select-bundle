@@ -13,53 +13,11 @@
         $("#{{ id }}").selectpicker({});
 
         $(document).ready(function(){
-            var select = $("body #{{ id }}");
+            var inputId = "#{{ id }}";
+            var config  = {{ selectpicker|json_encode|raw }};
             {% if search.ajax|default %}
-                {% if search.route|default %}
-                    var config = {{ selectpicker|json_encode|raw }};
-                    config['property'] = "{{ search.property }}"
-                    var parent = select.parent();
-                    var searchbox = parent.find('.bs-searchbox');
-                    parent.on('changed.bs.select', function() {alert('ok')});
-                    $(searchbox).on('input propertychange', function(e) {
-                        e.stopPropagation();
-                    });
-
-                    var previousValue = null;
-                    $(searchbox).on('keyup', "input[type='text']", function() {
-                        var searchPattern = $(this).val();
-                        if (searchPattern != previousValue) {
-                            $.ajax({
-                                type: "POST",
-                                url: Routing.generate(config.live_search.route),
-                                data: {
-                                    operator: config.live_search.operator,
-                                    pattern: searchPattern
-                                },
-                                cache:false,
-                                success: function(response)
-                                {
-                                    select.find('option').each(function(idx, elt) {
-                                        $(this).remove();
-                                    });
-                                    select.selectpicker('refresh');
-
-                                    $.each(response, function(idx, value) {
-                                        select.append('<option value="'+value.id+'">'+value[config['property']]+'</option>')
-                                    });
-
-                                    select.selectpicker('refresh');
-                                    previousValue = searchPattern;
-                                }
-                            });
-                        }
-                    });
-
-                {% else  %}
-                    alert('No ajax route defined!');
-                {% endif %}
+                AxiolabBootstrapSelect.initAjaxSearching(inputId, config);
             {% endif %}
-            select.on('changed.bs.select', function() {alert('ok')});
         });
     </script>
 {% endblock choice_widget %}
