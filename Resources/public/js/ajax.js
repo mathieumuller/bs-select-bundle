@@ -37,7 +37,7 @@ var AxiolabBootstrapSelect = {
                             },
                             success: function(html) {
                                 AxiolabBootstrapSelect.currentRequest = null;
-                                AxiolabBootstrapSelect.timer = clearTimeout();
+                                clearTimeout(AxiolabBootstrapSelect.timer);
 
                                 $newSelect = $(html).find(inputId);
                                 $("body " + inputId).html($newSelect.html());
