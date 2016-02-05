@@ -24,10 +24,11 @@
 
 {% block choice_widget_collapsed %}
     {% spaceless %}
+        {% set originalClass = attr.class|default ? attr.class : "" %}
         {% if selectpicker.show_tick|default %}
-            {% set attr = attr|merge({'class': 'selectpicker show-tick form-control'}) %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker show-tick form-control'}) %}
         {% else %}
-            {% set attr = attr|merge({'class': 'selectpicker form-control'}) %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker form-control'}) %}
         {% endif %}
         <select
             {{ block('widget_attributes') }}
@@ -81,62 +82,4 @@
     {% endspaceless %}
 {% endblock choice_widget_options %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-{#% block bootstrap_select_widget %}
-    {% spaceless %}
-        <select
-            {{ block('widget_attributes') }}
-            {% if multiple is not empty %} multiple{% endif %}
-            {% if live_search is not empty %} data-live-search="true"{% endif %}
-            {% if max_options is not empty %} data-max-options="{{ max_options }}"{% endif %}
-            {% if placeholder is not empty %} title="{{ placeholder }}"{% endif %}
-            {% if selected_text_format is not empty %} selected-text-format="{{ selected_text_format }}"{% endif %}
-            {% if style is not empty %} data-style="{{ style }}"{% endif %}
-            {% if width is not empty %} data-width="{{ width }}"{% endif %}
-        >
-            {% if empty_value is not none %}
-                <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
-            {% endif %}
-            {% if preferred_choices|length > 0 %}
-                {% set options = preferred_choices %}
-                {{ block('bootstrap_select_options_widget') }}
-                {% if choices|length > 0 and separator is not none %}
-                    <option disabled="disabled">{{ separator }}</option>
-                {% endif %}
-            {% endif %}
-            {% set options = choices %}
-            {{ block('bootstrap_select_options_widget') }}
-        </select>
-
-        <script>
-            $('.selectpicker').selectpicker({});
-        </script>
-    {% endspaceless %}
-{% endblock bootstrap_select_widget %}
-
-{% block bootstrap_select_options_widget %}
-    {% spaceless %}
-        {% for group_label, choice in options %}
-            {% if choice is iterable %}
-                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
-                    {% set options = choice %}
-                    {{ block('choice_widget_options') }}
-                </optgroup>
-            {% else %}
-                <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{{ choice.label|trans({}, translation_domain) }}</option>
-            {% endif %}
-        {% endfor %}
-    {% endspaceless %}
-{% endblock bootstrap_select_options_widget %#}
 
