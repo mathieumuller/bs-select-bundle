@@ -24,10 +24,11 @@
 
 {% block choice_widget_collapsed %}
     {% spaceless %}
+        {% set originalClass = attr.class|default ? attr.class : "" %}
         {% if selectpicker.show_tick|default %}
-            {% set attr = attr|merge({'class': 'selectpicker show-tick form-control'}) %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker show-tick form-control'}) %}
         {% else %}
-            {% set attr = attr|merge({'class': 'selectpicker form-control'}) %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker form-control'}) %}
         {% endif %}
         <select
             {{ block('widget_attributes') }}
