@@ -4,4 +4,4 @@ services:
         arguments:
             - %axiolab_bootstrap_select%
         tags:
-            - { name: form.type_extension, alias: choice }
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
