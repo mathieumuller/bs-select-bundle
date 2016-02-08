@@ -42,6 +42,7 @@ var AxiolabBootstrapSelect = {
                                 $newSelect = $(html).find(inputId);
                                 $("body " + inputId).html($newSelect.html());
                                 $("body " + inputId).selectpicker('refresh');
+                                AxiolabBootstrapSelect.searchValue = search_pattern;
                             }
                         });
                     },
