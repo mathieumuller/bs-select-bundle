@@ -2,6 +2,7 @@
     {% spaceless %}
         {% set search = selectpicker.live_search|default %}
         {% set multiselect = selectpicker.multiselect|default %}
+        {% set isDateType = form.parent.vars.original_type in ["date", "time", "birthday"] %}
 
         {% if expanded %}
             {{ block('choice_widget_expanded') }}
@@ -9,17 +10,19 @@
             {{ block('choice_widget_collapsed') }}
         {% endif %}
     {% endspaceless %}
-    <script>
-        $("#{{ id }}").selectpicker({});
-
-        $(document).ready(function(){
-            var inputId = "#{{ id }}";
-            var config  = {{ selectpicker|json_encode|raw }};
-            {% if search.ajax|default %}
-                AxiolabBootstrapSelect.initAjaxSearching(inputId, config);
-            {% endif %}
-        });
-    </script>
+    {% if not isDateType %}
+        <script>
+            $("#{{ id }}").selectpicker({});
+    
+            $(document).ready(function(){
+                var inputId = "#{{ id }}";
+                var config  = {{ selectpicker|json_encode|raw }};
+                {% if search.ajax|default %}
+                    AxiolabBootstrapSelect.initAjaxSearching(inputId, config);
+                {% endif %}
+            });
+        </script>
+    {% endif %}
 {% endblock choice_widget %}
 
 {% block choice_widget_collapsed %}
@@ -27,7 +30,7 @@
         {% set originalClass = attr.class|default ? attr.class : "" %}
         {% if selectpicker.show_tick|default %}
             {% set attr = attr|merge({'class': originalClass ~ ' selectpicker show-tick form-control'}) %}
-        {% else %}
+        {% elseif not isDateType %}
             {% set attr = attr|merge({'class': originalClass ~ ' selectpicker form-control'}) %}
         {% endif %}
         <select
