@@ -28,11 +28,15 @@
 {% block choice_widget_collapsed %}
     {% spaceless %}
         {% set originalClass = attr.class|default ? attr.class : "" %}
-        {% if selectpicker.show_tick|default %}
-            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker show-tick form-control'}) %}
-        {% elseif not isDateType %}
-            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker form-control'}) %}
+        {% set selectPickerClass = 'form-control' %}
+        {% if not isDateType %}
+            {% set selectPickerClass = selectPickerClass ~ ' selectpicker' %}
+            {% if selectpicker.show_tick|default %}
+                {% set selectPickerClass = selectPickerClass ~ ' show-tick' %}
+            {% endif %}
         {% endif %}
+
+        {% set attr = attr|merge({'class': originalClass ~ " " ~ selectPickerClass}) %}
         <select
             {{ block('widget_attributes') }}
             {% if multiple %} multiple="true"
