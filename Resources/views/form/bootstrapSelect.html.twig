@@ -2,50 +2,47 @@
     {% spaceless %}
         {% set search = selectpicker.live_search|default %}
         {% set multiselect = selectpicker.multiselect|default %}
-        {% set isDateType = form.parent.vars.original_type in ["date", "time", "birthday"] %}
 
         {% if expanded %}
             {{ block('choice_widget_expanded') }}
         {% else %}
             {{ block('choice_widget_collapsed') }}
         {% endif %}
+    <script>
+        $("#{{ id }}").selectpicker({});
+
+        $(document).ready(function() {
+            var inputId = "#{{ id }}";
+            var inputName = "{{ full_name }}";
+            var config  = {{ selectpicker|json_encode|raw }};
+            {% if search.ajax|default %}
+                AxiolabBootstrapSelect.initAjaxSearching(inputId, inputName, config);
+                $('body').on('changed.bs.select', inputId, function() {
+                    $(inputId).closest('form').trigger('change');
+                });
+            {% endif %}
+        });
+    </script>
     {% endspaceless %}
-    {% if not isDateType %}
-        <script>
-            $("#{{ id }}").selectpicker({});
-    
-            $(document).ready(function(){
-                var inputId = "#{{ id }}";
-                var config  = {{ selectpicker|json_encode|raw }};
-                {% if search.ajax|default %}
-                    AxiolabBootstrapSelect.initAjaxSearching(inputId, config);
-                {% endif %}
-            });
-        </script>
-    {% endif %}
 {% endblock choice_widget %}
 
 {% block choice_widget_collapsed %}
     {% spaceless %}
         {% set originalClass = attr.class|default ? attr.class : "" %}
-        {% set selectPickerClass = 'form-control' %}
-        {% if not isDateType %}
-            {% set selectPickerClass = selectPickerClass ~ ' selectpicker' %}
-            {% if selectpicker.show_tick|default %}
-                {% set selectPickerClass = selectPickerClass ~ ' show-tick' %}
-            {% endif %}
+        {% if selectpicker.show_tick|default %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker show-tick'}) %}
+        {% else %}
+            {% set attr = attr|merge({'class': originalClass ~ ' selectpicker'}) %}
         {% endif %}
-
-        {% set attr = attr|merge({'class': originalClass ~ " " ~ selectPickerClass}) %}
         <select
-            {{ block('widget_attributes') }}
+            {{ block('bsselect_widget_attributes') }}
             {% if multiple %} multiple="true"
                 {% if multiselect.enabled|default %} multiple {% endif %}
                 {% if multiselect.max_options|default %} data-max-options="{{ multiselect.max_options }}"{% endif %}
                 {% if multiselect.selected_text_format|default %} data-selected-text-format="{{ multiselect.selected_text_format }}"{% endif %}
             {% endif %}
             {% if search.enabled|default %} data-live-search="true"{% endif %}
-            {% if selectpicker.placeholder|default %} title="{{ selectpicker.placeholder|trans({}, translation_domain) }}"{% endif %}
+            {% if selectpicker.placeholder|default %} title="{{ selectpicker.placeholder|trans }}"{% endif %}
             {% if selectpicker.style|default %} data-style="{{ selectpicker.style }}"{% endif %}
             {% if selectpicker.width|default %} data-width="{{ selectpicker.width }}"{% endif %}
             {% if selectpicker.max_size|default %} data-size="{{ selectpicker.max_size }}"{% endif %}
@@ -89,4 +86,23 @@
     {% endspaceless %}
 {% endblock choice_widget_options %}
 
-
+{%- block bsselect_widget_attributes -%}
+    {% if attr.id|default is empty %}
+        id="{{ id }}" name="{{ full_name }}"
+    {% endif %}
+    {% if attr.name|default is empty %}
+        name="{{ full_name }}"
+    {% endif %}
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock bsselect_widget_attributes -%}
