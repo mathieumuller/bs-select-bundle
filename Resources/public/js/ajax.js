@@ -15,11 +15,10 @@ var AxiolabBootstrapSelect = {
         });
 
         $searchbar.on('keyup', function() {
-            console.log(inputId);
             $("body").find('.dropdown-menu .no-results').html($loader);
             var search_pattern = $(this).val();
 
-            if (search_pattern != AxiolabBootstrapSelect.searchValue) {
+            if (search_pattern != AxiolabBootstrapSelect.searchValue && $.trim(search_pattern) !== '') {
                 if (AxiolabBootstrapSelect.timer != null) {
                     clearTimeout(AxiolabBootstrapSelect.timer);
                 }
