@@ -9,20 +9,24 @@
         {% else %}
             {{ block('choice_widget_collapsed') }}
         {% endif %}
+        {% if not isDateType %}
+            <script>
+                $("#{{ id }}").selectpicker({});
+
+                $(document).ready(function(){
+                    var inputId = "#{{ id }}";
+                    var inputName = "{{ full_name }}";
+                    var config  = {{ selectpicker|json_encode|raw }};
+                    {% if search.ajax|default %}
+                        AxiolabBootstrapSelect.initAjaxSearching(inputId, inputName, config);
+                        $('body').on('changed.bs.select', inputId, function() {
+                            $(inputId).closest('form').trigger('change');
+                        });
+                    {% endif %}
+                });
+            </script>
+        {% endif %}
     {% endspaceless %}
-    {% if not isDateType %}
-        <script>
-            $("#{{ id }}").selectpicker({});
-    
-            $(document).ready(function(){
-                var inputId = "#{{ id }}";
-                var config  = {{ selectpicker|json_encode|raw }};
-                {% if search.ajax|default %}
-                    AxiolabBootstrapSelect.initAjaxSearching(inputId, config);
-                {% endif %}
-            });
-        </script>
-    {% endif %}
 {% endblock choice_widget %}
 
 {% block choice_widget_collapsed %}
@@ -38,7 +42,7 @@
 
         {% set attr = attr|merge({'class': originalClass ~ " " ~ selectPickerClass}) %}
         <select
-            {{ block('widget_attributes') }}
+            {{ block('bsselect_widget_attributes') }}
             {% if multiple %} multiple="true"
                 {% if multiselect.enabled|default %} multiple {% endif %}
                 {% if multiselect.max_options|default %} data-max-options="{{ multiselect.max_options }}"{% endif %}
@@ -50,6 +54,7 @@
             {% if selectpicker.width|default %} data-width="{{ selectpicker.width }}"{% endif %}
             {% if selectpicker.max_size|default %} data-size="{{ selectpicker.max_size }}"{% endif %}
             data-container="body"
+            data-live-search-placeholder="{{ 'generics.search'|trans({}, 'shared')}}"
         >
             {% if empty_value is not none %}
                 <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
@@ -79,8 +84,16 @@
                 <option
                     value="{{ choice.value }}"
                     {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
-                    {% if selectpicker.subtext|default and choice.attr.subtext|default %} data-subtext="{{ choice.attr.subtext }}"{% endif %}
-                    {% if selectpicker.keywords|default and choice.attr.keywords|default %} data-tokens="{{ choice.attr.keywords }}"{% endif %}
+                    {% set attr = choice.attr %}
+                    {% if selectpicker.subtext|default and attr.subtext|default %}
+                        data-subtext="{{ attr.subtext }}"
+                        {% set attr = unsetIndex(attr, 'subtext') %}
+                    {% endif %}
+                    {% if selectpicker.keywords|default and attr.keywords|default %}
+                        data-tokens="{{ attr.keywords }}"
+                        {% set attr = unsetIndex(attr, 'keywords') %}
+                    {% endif %}
+                    {{ block('attributes') }}
                 >
                     {{ choice.label|trans({}, translation_domain) }}
                 </option>
@@ -89,4 +102,23 @@
     {% endspaceless %}
 {% endblock choice_widget_options %}
 
-
+{%- block bsselect_widget_attributes -%}
+    {% if attr.id|default is empty %}
+        id="{{ id }}" name="{{ full_name }}"
+    {% endif %}
+    {% if attr.name|default is empty %}
+        name="{{ full_name }}"
+    {% endif %}
+    {%- if disabled %} disabled="disabled"{% endif -%}
+    {%- if required %} required="required"{% endif -%}
+    {%- for attrname, attrvalue in attr -%}
+        {{- " " -}}
+        {%- if attrname in ['placeholder', 'title'] -%}
+            {{- attrname }}="{{ translation_domain is same as(false) ? attrvalue : attrvalue|trans({}, translation_domain) }}"
+        {%- elseif attrvalue is same as(true) -%}
+            {{- attrname }}="{{ attrname }}"
+        {%- elseif attrvalue is not same as(false) -%}
+            {{- attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock bsselect_widget_attributes -%}
