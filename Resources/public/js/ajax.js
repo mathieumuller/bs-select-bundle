@@ -2,7 +2,7 @@ var AxiolabBootstrapSelect = {
     timer: null,
     searchValue: null,
     currentRequest: null,
-    initAjaxSearching: function(inputId, config) {
+    initAjaxSearching: function(inputId, inputName, config) {
         $select    = $("body " + inputId);
         $container = $select.parent();
         $form      = $container.closest('form');
@@ -33,7 +33,9 @@ var AxiolabBootstrapSelect = {
                             url : $form.attr('action'),
                             type: $form.attr('method'),
                             data : {
-                                bsselect_search: search_pattern
+                                bsselect_search: search_pattern,
+                                search_input_id: inputId.replace('#', ''),
+                                search_input_name: inputName
                             },
                             success: function(html) {
                                 AxiolabBootstrapSelect.currentRequest = null;
