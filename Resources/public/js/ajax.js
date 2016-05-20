@@ -15,10 +15,10 @@ var AxiolabBootstrapSelect = {
         });
 
         $searchbar.on('keyup', function() {
-            $("body").find('.dropdown-menu .no-results').html($loader);
             var search_pattern = $(this).val();
 
-            if (search_pattern != AxiolabBootstrapSelect.searchValue) {
+            if (search_pattern != AxiolabBootstrapSelect.searchValue && search_pattern.length >= config.search_start) {
+                $("body").find('.dropdown-menu .no-results').html($loader);
                 if (AxiolabBootstrapSelect.timer != null) {
                     clearTimeout(AxiolabBootstrapSelect.timer);
                 }
@@ -44,6 +44,7 @@ var AxiolabBootstrapSelect = {
                                 $newSelect = $(html).find(inputId);
                                 $("body " + inputId).html($newSelect.html());
                                 $("body " + inputId).selectpicker('refresh');
+                                $("body " + inputId).selectpicker('setSize');
                                 AxiolabBootstrapSelect.searchValue = search_pattern;
                             }
                         });
