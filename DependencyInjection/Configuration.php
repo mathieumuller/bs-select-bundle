@@ -19,6 +19,9 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('show_tick')
                     ->defaultFalse()
                 ->end()
+                ->scalarNode('preferred_language')
+                    ->defaultValue('en_US')
+                ->end()
             ->end()
         ;
 
