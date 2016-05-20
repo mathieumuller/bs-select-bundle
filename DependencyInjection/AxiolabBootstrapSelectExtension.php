@@ -33,14 +33,11 @@ class AxiolabBootstrapSelectExtension extends Extension implements PrependExtens
         if (true === isset($bundles['AsseticBundle'])) {
             $this->configureAssetic($container);
         }
-        //prepend twig
-        if (true === isset($bundles['TwigBundle'])) {
-            $this->configureTwig($container, $config);
-        }
     }
 
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->configureTwig($container);
     }
 
     public function getAlias()
@@ -50,7 +47,8 @@ class AxiolabBootstrapSelectExtension extends Extension implements PrependExtens
 
     protected function configureAssetic(ContainerBuilder $container)
     {
-        $language = $container->getParameter('axiolab_bootstrap_select')['preferred_language'];
+        $paramLang = $container->getParameter('axiolab_bootstrap_select')['preferred_language'];
+        $language = empty($paramLang) ? 'en_US' : $paramLang;
         $jsPath = '%kernel.root_dir%/../vendor/axiolab/bs-select-bundle/Resources/public/js';
         $jsConfig = [
             'axiolab_bootstrap_select' => [
@@ -77,21 +75,15 @@ class AxiolabBootstrapSelectExtension extends Extension implements PrependExtens
         }
     }
 
-    protected function configureTwig(ContainerBuilder $container, $config)
+    protected function configureTwig(ContainerBuilder $container)
     {
-        foreach ($container->getExtensions() as $name => $extension) {
-            switch ($name) {
-                case 'twig':
-                    $container->prependExtensionConfig(
-                        $name,
-                        [
-                            'form_themes' => [$config['form_resource']],
-                        ]
-                    );
-                    break;
-                default:
-                    break;
-            }
+        $resources = [];
+        if ($container->hasParameter('twig.form.resources')) {
+            $resources = $container->getParameter('twig.form.resources');
         }
+
+        $resources[] = $container->getParameter('axiolab_bootstrap_select')['form_resource'];
+
+        $container->setParameter('twig.form.resources', $resources);
     }
 }
