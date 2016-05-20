@@ -56,4 +56,31 @@ There are  a few parameters you can customize in your config.yml file, below is 
 ```
 
 #### Form widget configuration
-    // ...
+    Here is the base configuration to use the bootstrapselect form type (this bundle overrides each ChoiceType and childs)
+    Please look https://silviomoreto.github.io/bootstrap-select for more info
+```php
+    $builder->add(
+        'toto', 
+        EntityType::class,
+        [
+            'class' => 'AppBundle\Entity\Toto',
+            'property' => 'tata',
+            // The following options can be customized
+            'selectpicker' => [
+                'max_size' => 10, // The bootstrapselect only displays 10 options and a scrollbar
+                'width' => '100%', 
+                'placeholder' => 'search a tata for toto',
+                'style' => 'btn-sm', // add the wished class to the bootstrapselect
+                'subtext' => 'titi', // Allows you to add subtext to your options
+                'keywords' => 'tutu', // Allows you to add keywords to the live_search(ajax or not)
+                'multiselect' => [ // Allows you to select many choices
+                    'enabled' => false, //Enable/disable the multiselect
+                    'max-options' => 5, // Set the maximum of selectable options
+                    'selected_text_format' => "...",
+                ],
+                'live_search' => [
+                    'enabled' => true, //Enable/disable the live_search
+                    'ajax' => false, //Enable/disable ajax for the live_search
+                ],
+            ],
+```
