@@ -1,5 +1,7 @@
 # AXIOLAB BOOTSTRAPSELECTBUNDLE
 
+Transform your symfony form choice and entity fields into a fully configurable bootstrap-select.
+
 Installation
 ============
 
@@ -50,7 +52,7 @@ There are  a few parameters you can customize in your config.yml file, below is 
 ```yml
     axiolab_bootstrap_select:
         form_resource: "AxiolabBootstrapSelectBundle:form:bootstrapSelect.html.twig" # If you want to change the botstrapselect widget template provide your template path here
-        preferred_language: "en_US" # The language for the translations (cf i18N)
+        preferred_language: "en_US" # The language for the translations (cf [i18n](https://github.com/mathieumuller/bs-select-bundle/tree/master/Resources/public/js/i18n) for available languages)
         show_tick: true # Displays a check icon on the selected option(s)
         search_start: 3 # If you use bootstrapselect live_search with ajax, this is the minimum characters to provide before an ajax request is launched
 ```
