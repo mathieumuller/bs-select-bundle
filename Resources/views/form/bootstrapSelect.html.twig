@@ -54,7 +54,6 @@
             {% if selectpicker.width|default %} data-width="{{ selectpicker.width }}"{% endif %}
             {% if selectpicker.max_size|default %} data-size="{{ selectpicker.max_size }}"{% endif %}
             data-container="body"
-            data-live-search-placeholder="{{ 'generics.search'|trans({}, 'shared')}}"
         >
             {% if empty_value is not none %}
                 <option value="">{{ empty_value|trans({}, translation_domain) }}</option>
