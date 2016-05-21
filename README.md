@@ -60,7 +60,7 @@ There are  a few parameters you can customize in your config.yml file, below is 
 
 #### Form widget configuration
     Here is the base configuration to use the bootstrapselect form type (this bundle overrides each ChoiceType and childs)
-    Please look https://silviomoreto.github.io/bootstrap-select for more info
+    Please look [bootstrap-select homepage](https://silviomoreto.github.io/bootstrap-select) for more info
 ```php
     $builder->add(
         'toto', 
