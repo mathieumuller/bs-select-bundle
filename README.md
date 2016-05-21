@@ -59,8 +59,8 @@ There are  a few parameters you can customize in your config.yml file, below is 
 *cf [i18n](Resources/public/js/i18n) for available languages
 
 #### Form widget configuration
-    Here is the base configuration to use the bootstrapselect form type (this bundle overrides each ChoiceType and childs)
-    Please look [bootstrap-select homepage](https://silviomoreto.github.io/bootstrap-select) for more info
+Here is the base configuration to use the bootstrapselect form type (this bundle overrides each ChoiceType and childs)
+Please look [bootstrap-select homepage](https://silviomoreto.github.io/bootstrap-select) for more info
 ```php
     $builder->add(
         'toto', 
