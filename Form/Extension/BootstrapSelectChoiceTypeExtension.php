@@ -46,6 +46,7 @@ class BootstrapSelectChoiceTypeExtension extends AbstractTypeExtension
                 'subtext'     => false,
                 'keywords'    => false,
                 'show_tick'   => $this->bundleParameters['show_tick'],
+                'search_start' => $this->bundleParameters['search_start'],
                 'max_size'    => false
             ]
         ];
