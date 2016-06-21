@@ -85,7 +85,7 @@
                     {% if choice is selectedchoice(value) %} selected="selected"{% endif %}
                     {% set attr = choice.attr %}
                     {% if selectpicker.subtext|default and attr.subtext|default %}
-                        data-subtext="{{ attr.subtext }}"
+                        data-subtext="{{ attr.subtext|trans({}, translation_domain) }}"
                         {% set attr = unsetIndex(attr, 'subtext') %}
                     {% endif %}
                     {% if selectpicker.keywords|default and attr.keywords|default %}
