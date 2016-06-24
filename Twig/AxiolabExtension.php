@@ -2,7 +2,7 @@
 
 namespace Axiolab\BootstrapSelectBundle\Twig;
 
-class AxiolabEtension extends \Twig_Extension
+class AxiolabExtension extends \Twig_Extension
 {
     public function getFunctions()
     {
