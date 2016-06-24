@@ -5,3 +5,9 @@ services:
             - %axiolab_bootstrap_select%
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ChoiceType }
+
+    axiolab.twig.axiolab_extension:
+        class: Axiolab\BootstrapSelectBundle\Twig\AxiolabExtension
+        tags:
+            - { name: twig.extension }
+            
