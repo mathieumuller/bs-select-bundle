@@ -3,13 +3,22 @@ var AxiolabBootstrapSelect = {
     searchValue: null,
     currentRequest: null,
     initAjaxSearching: function(inputId, inputName, config) {
+        var traductions = {
+            fr: {
+                search_start: '3 caractères minimum pour lancer la recherche.'
+            },
+            en: {
+                search_start: 'Search start after 3 characters'
+            }
+        }
+
         $select    = $("body " + inputId);
         $container = $select.parent();
         $form      = $container.closest('form');
         $searchbox = $container.find('.bs-searchbox');
         $searchbar = $container.find("input[type='text']");
         $loader    = "<div class='text-center'><i class='fa fa-refresh fa-spin'></i></div>";
-        $searchstart = "<div class='text-center'>La recherche ne commence qu'as 3 caractères.</div>";
+        $searchstart = "<div class='text-center'>"+traductions[config.locale].search_start+"</div>";
         $noresult = $("body").find('.dropdown-menu .no-results');
 
         $searchbox.on('input propertychange', function(e) {
@@ -19,7 +28,6 @@ var AxiolabBootstrapSelect = {
         $searchbar.on('keyup', function() {
             var search_pattern = $(this).val();
             
-            alert(config.locale);
             if (search_pattern.length < config.search_start) {
                 $("body").find('.dropdown-menu .no-results').html($searchstart);
             } else if (search_pattern != AxiolabBootstrapSelect.searchValue) {
