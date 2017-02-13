@@ -10,6 +10,7 @@
             {{ block('choice_widget_collapsed') }}
         {% endif %}
         {% if not isDateType %}
+            {% set selectpicker = selectpicker|join({'locale':app.request.locale}) %}
             <script>
                 $("#{{ id }}").selectpicker({});
 

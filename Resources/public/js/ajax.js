@@ -9,6 +9,7 @@ var AxiolabBootstrapSelect = {
         $searchbox = $container.find('.bs-searchbox');
         $searchbar = $container.find("input[type='text']");
         $loader    = "<div class='text-center'><i class='fa fa-refresh fa-spin'></i></div>";
+        $searchstart = "<div class='text-center'>La recherche ne commence qu'as 3 caractères.</div>";
         $noresult = $("body").find('.dropdown-menu .no-results');
 
         $searchbox.on('input propertychange', function(e) {
@@ -17,9 +18,13 @@ var AxiolabBootstrapSelect = {
 
         $searchbar.on('keyup', function() {
             var search_pattern = $(this).val();
-            $("body").find('.dropdown-menu .no-results').html($loader);
+            
+            alert(config.locale);
+            if (search_pattern.length < config.search_start) {
+                $("body").find('.dropdown-menu .no-results').html($searchstart);
+            } else if (search_pattern != AxiolabBootstrapSelect.searchValue) {
+                $("body").find('.dropdown-menu .no-results').html($loader);
 
-            if (search_pattern != AxiolabBootstrapSelect.searchValue && search_pattern.length >= config.search_start) {
                 if (AxiolabBootstrapSelect.timer != null) {
                     clearTimeout(AxiolabBootstrapSelect.timer);
                 }
@@ -55,7 +60,7 @@ var AxiolabBootstrapSelect = {
                             }
                         });
                     },
-                    250
+                    300
                 );
             }
         });
