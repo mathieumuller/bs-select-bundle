@@ -35,8 +35,8 @@
       ];
     },
     multipleSeparator: ', ',
-    selectAllText: 'Tout Sélectionner',
-    deselectAllText: 'Tout Dé-selectionner',
+    selectAllText: 'Tout sélectionner',
+    deselectAllText: 'Tout désélectionner',
   };
 })(jQuery);
 
