@@ -3,13 +3,13 @@ var AxiolabBootstrapSelect = {
     searchValue: null,
     currentRequest: null,
     initAjaxSearching: function(inputId, inputName, config) {
-        $select    = $("body " + inputId);
-        $container = $select.parent();
-        $form      = $container.closest('form');
-        $searchbox = $container.find('.bs-searchbox');
-        $searchbar = $container.find("input[type='text']");
-        $loader    = "<div class='text-center'><i class='fa fa-refresh fa-spin'></i></div>";
-        $noresult = $("body").find('.dropdown-menu .no-results');
+        var $select    = $("body " + inputId);
+        var $container = $select.parent();
+        var $form      = $container.closest('form');
+        var $searchbox = $container.find('.bs-searchbox');
+        var $searchbar = $container.find("input[type='text']");
+        var $loader    = "<div class='text-center'><i class='fa fa-refresh fa-spin'></i></div>";
+        var $noresult = $("body").find('.dropdown-menu .no-results');
 
         $searchbox.on('input propertychange', function(e) {
             e.stopPropagation();
