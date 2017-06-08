@@ -2,7 +2,7 @@
     {% spaceless %}
         {% set search = selectpicker.live_search|default %}
         {% set multiselect = selectpicker.multiselect|default %}
-        {% set isDateType = form.parent.vars.original_type in ["date", "time", "birthday"] %}
+        {% set isDateType = form.parent.vars.original_type|default in ["date", "time", "birthday"] %}
 
         {% if expanded %}
             {{ block('choice_widget_expanded') }}
